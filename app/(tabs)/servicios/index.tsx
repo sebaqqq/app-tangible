@@ -4,12 +4,26 @@ import { Text, Card, Searchbar, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
-import { Car, User, Chrome as Home, Users, Building, ArrowRight } from 'lucide-react-native';
+import {
+  Car,
+  User,
+  Chrome as Home,
+  Users,
+  Building,
+  ArrowRight,
+} from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { mockServicios } from '@/data/mockData';
 import { formatCLP } from '@/utils/format';
 
-const categorias = ['Todas', 'Automotriz', 'Personal', 'Inmobiliaria', 'Ciudadana', 'Empresarial'];
+const categorias = [
+  'Todas',
+  'Automotriz',
+  'Personal',
+  'Inmobiliaria',
+  'Ciudadana',
+  'Empresarial',
+];
 
 const iconMap = {
   car: Car,
@@ -24,23 +38,31 @@ export default function ServiciosScreen() {
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const router = useRouter();
 
-  const filteredServices = mockServicios.filter(servicio => {
-    const matchesSearch = servicio.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         servicio.descripcion.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'Todas' || servicio.categoria === selectedCategory;
+  const filteredServices = mockServicios.filter((servicio) => {
+    const matchesSearch =
+      servicio.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      servicio.descripcion.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      selectedCategory === 'Todas' || servicio.categoria === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const renderService = ({ item, index }: { item: typeof mockServicios[0], index: number }) => {
+  const renderService = ({
+    item,
+    index,
+  }: {
+    item: (typeof mockServicios)[0];
+    index: number;
+  }) => {
     const IconComponent = iconMap[item.icono as keyof typeof iconMap] || User;
-    
+
     return (
       <MotiView
         from={{ opacity: 0, translateX: 30 }}
         animate={{ opacity: 1, translateX: 0 }}
         transition={{ type: 'timing', duration: 500, delay: index * 100 }}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => router.push(`/(tabs)/servicios/${item.id}`)}
           style={styles.serviceItem}
         >
@@ -48,7 +70,11 @@ export default function ServiciosScreen() {
             <Card.Content style={styles.serviceContent}>
               <View style={styles.serviceHeader}>
                 <View style={styles.iconContainer}>
-                  <IconComponent size={24} color={darkTheme.colors.primary} strokeWidth={2} />
+                  <IconComponent
+                    size={24}
+                    color={darkTheme.colors.primary}
+                    strokeWidth={2}
+                  />
                 </View>
                 <View style={styles.serviceInfo}>
                   <Text variant="titleMedium" style={styles.serviceName}>
@@ -58,13 +84,16 @@ export default function ServiciosScreen() {
                     {item.categoria}
                   </Text>
                 </View>
-                <ArrowRight size={20} color={darkTheme.colors.onSurfaceVariant} />
+                <ArrowRight
+                  size={20}
+                  color={darkTheme.colors.onSurfaceVariant}
+                />
               </View>
-              
+
               <Text variant="bodyMedium" style={styles.serviceDescription}>
                 {item.descripcion}
               </Text>
-              
+
               {item.precio && (
                 <Text variant="titleMedium" style={styles.servicePrice}>
                   {formatCLP(item.precio)}/mes
@@ -83,7 +112,7 @@ export default function ServiciosScreen() {
         <Text variant="headlineMedium" style={styles.title}>
           Servicios
         </Text>
-        
+
         <Searchbar
           placeholder="Buscar servicios..."
           onChangeText={setSearchQuery}
@@ -91,7 +120,7 @@ export default function ServiciosScreen() {
           style={styles.searchbar}
           theme={{ colors: darkTheme.colors }}
         />
-        
+
         <FlatList
           data={categorias}
           horizontal

@@ -11,8 +11,9 @@ export const darkTheme = {
     tertiary: '#F59E0B', // Amber
     tertiaryContainer: '#92400E',
     surface: '#1F2937', // Gray-800
+    surfaceNavigation: '#000000', // dark
     surfaceVariant: '#374151', // Gray-700
-    background: '#111827', // Gray-900
+    background: '#0F0F10', // Gray-900
     outline: '#6B7280', // Gray-500
     onSurface: '#F9FAFB', // Gray-50
     onSurfaceVariant: '#D1D5DB', // Gray-300

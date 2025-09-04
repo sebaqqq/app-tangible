@@ -230,12 +230,14 @@ export default function HomeScreen() {
         </MotiView>
       </ScrollView>
 
+      {/*  
       <FAB
         icon={({ size, color }) => <Plus size={size} color={color} />}
         style={styles.fab}
         onPress={() => router.push('/(tabs)/servicios')}
         label="Nuevo servicio"
       />
+      */}
     </SafeAreaView>
   );
 }

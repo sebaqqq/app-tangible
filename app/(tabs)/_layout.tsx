@@ -15,12 +15,12 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: darkTheme.colors.surface,
+          backgroundColor: darkTheme.colors.surfaceNavigation,
           borderTopColor: darkTheme.colors.outline,
           borderTopWidth: 0.5,
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 82,
+          paddingBottom: 6,
+          paddingTop: -12,
         },
         tabBarActiveTintColor: darkTheme.colors.primary,
         tabBarInactiveTintColor: darkTheme.colors.onSurfaceVariant,

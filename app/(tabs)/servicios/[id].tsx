@@ -4,7 +4,15 @@ import { Text, Card, Button, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { MotiView } from 'moti';
-import { ArrowLeft, Check, Car, User, Chrome as Home, Users, Building } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  Check,
+  Car,
+  User,
+  Chrome as Home,
+  Users,
+  Building,
+} from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { mockServicios } from '@/data/mockData';
 import { formatCLP } from '@/utils/format';
@@ -20,8 +28,8 @@ const iconMap = {
 export default function ServicioDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  
-  const servicio = mockServicios.find(s => s.id === id);
+
+  const servicio = mockServicios.find((s) => s.id === id);
 
   if (!servicio) {
     return (
@@ -61,7 +69,11 @@ export default function ServicioDetailScreen() {
             <Card.Content style={styles.heroContent}>
               <View style={styles.heroHeader}>
                 <View style={styles.iconContainer}>
-                  <IconComponent size={40} color={darkTheme.colors.primary} strokeWidth={1.5} />
+                  <IconComponent
+                    size={40}
+                    color={darkTheme.colors.primary}
+                    strokeWidth={1.5}
+                  />
                 </View>
                 <View style={styles.heroInfo}>
                   <Text variant="headlineSmall" style={styles.serviceName}>
@@ -72,7 +84,7 @@ export default function ServicioDetailScreen() {
                   </Text>
                 </View>
               </View>
-              
+
               {servicio.precio && (
                 <Text variant="titleLarge" style={styles.servicePrice}>
                   {formatCLP(servicio.precio)}/mes
@@ -114,10 +126,18 @@ export default function ServicioDetailScreen() {
                   key={index}
                   from={{ opacity: 0, translateX: 20 }}
                   animate={{ opacity: 1, translateX: 0 }}
-                  transition={{ type: 'timing', duration: 500, delay: 700 + index * 100 }}
+                  transition={{
+                    type: 'timing',
+                    duration: 500,
+                    delay: 700 + index * 100,
+                  }}
                   style={styles.benefitItem}
                 >
-                  <Check size={20} color={darkTheme.colors.secondary} strokeWidth={2} />
+                  <Check
+                    size={20}
+                    color={darkTheme.colors.secondary}
+                    strokeWidth={2}
+                  />
                   <Text variant="bodyMedium" style={styles.benefitText}>
                     {beneficio}
                   </Text>
