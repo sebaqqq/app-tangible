@@ -1,27 +1,50 @@
-import React, { useState, useRef } from 'react';
-import { View, StyleSheet, ScrollView, FlatList, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import { Text, Card, Button, FAB } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
-import { Plus, TriangleAlert as AlertTriangle, ArrowRight } from 'lucide-react-native';
+import {
+  Plus,
+  TriangleAlert as AlertTriangle,
+  ArrowRight,
+} from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { useAuth } from '@/hooks/useAuth';
 import { StatusChip } from '@/components/ui/StatusChip';
-import { getGreetingMessage, mockServicios, mockSolicitudes } from '@/data/mockData';
+import {
+  getGreetingMessage,
+  mockServicios,
+  mockSolicitudes,
+} from '@/data/mockData';
 import { formatDateDDMMYY } from '@/utils/format';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
+const isSmallScreen = width < 375;
+const cardWidth = width - spacing.xl * 2;
 
 export default function HomeScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const greeting = user ? getGreetingMessage(user.nombre.split(' ')[0]) : 'Hola 👋';
+  const greeting = user
+    ? getGreetingMessage(user.nombre.split(' ')[0])
+    : 'Hola 👋';
   const featuredServices = mockServicios.slice(0, 3);
 
-  const renderServiceSlide = ({ item }: { item: typeof mockServicios[0] }) => (
+  const renderServiceSlide = ({
+    item,
+  }: {
+    item: (typeof mockServicios)[0];
+  }) => (
     <MotiView
       from={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -47,8 +70,12 @@ export default function HomeScreen() {
     </MotiView>
   );
 
-  const renderActiveService = ({ item }: { item: typeof mockSolicitudes[0] }) => {
-    const servicio = mockServicios.find(s => s.id === item.servicioId);
+  const renderActiveService = ({
+    item,
+  }: {
+    item: (typeof mockSolicitudes)[0];
+  }) => {
+    const servicio = mockServicios.find((s) => s.id === item.servicioId);
     if (!servicio) return null;
 
     return (
@@ -57,7 +84,7 @@ export default function HomeScreen() {
         animate={{ opacity: 1, translateX: 0 }}
         transition={{ type: 'timing', duration: 500 }}
       >
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => router.push('/(tabs)/servicios')}
           style={styles.activeServiceItem}
         >
@@ -72,7 +99,11 @@ export default function HomeScreen() {
               <Text variant="bodySmall" style={styles.activeServiceDate}>
                 Creado: {formatDateDDMMYY(item.fechaCreacion)}
               </Text>
-              <ArrowRight size={16} color={darkTheme.colors.primary} style={styles.arrow} />
+              <ArrowRight
+                size={16}
+                color={darkTheme.colors.primary}
+                style={styles.arrow}
+              />
             </Card.Content>
           </Card>
         </TouchableOpacity>
@@ -82,7 +113,11 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header con saludo */}
         <MotiView
           from={{ opacity: 0, translateY: -30 }}
@@ -113,11 +148,13 @@ export default function HomeScreen() {
             renderItem={renderServiceSlide}
             horizontal
             showsHorizontalScrollIndicator={false}
-            snapToInterval={width - spacing.xl}
+            snapToInterval={cardWidth}
             decelerationRate="fast"
             contentContainerStyle={styles.servicesContainer}
             onMomentumScrollEnd={(event) => {
-              const index = Math.round(event.nativeEvent.contentOffset.x / (width - spacing.xl));
+              const index = Math.round(
+                event.nativeEvent.contentOffset.x / cardWidth
+              );
               setCurrentSlide(index);
             }}
           />
@@ -143,7 +180,9 @@ export default function HomeScreen() {
           ) : (
             <Card style={styles.emptyCard}>
               <Card.Content style={styles.emptyContent}>
-                <Text style={styles.emptyText}>No tienes servicios activos</Text>
+                <Text style={styles.emptyText}>
+                  No tienes servicios activos
+                </Text>
                 <Button
                   mode="contained"
                   onPress={() => router.push('/(tabs)/servicios')}
@@ -181,7 +220,9 @@ export default function HomeScreen() {
               onPress={() => router.push('/(tabs)/mapa')}
               style={[styles.quickButton, styles.secondaryButton]}
               contentStyle={styles.quickButtonContent}
-              icon={({ size, color }) => <AlertTriangle size={size} color={color} />}
+              icon={({ size, color }) => (
+                <AlertTriangle size={size} color={color} />
+              )}
             >
               Reportar Incidente
             </Button>
@@ -207,8 +248,12 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 100, // Espacio para el FAB
+  },
   header: {
-    padding: spacing.xl,
+    padding: isSmallScreen ? spacing.lg : spacing.xl,
     paddingBottom: spacing.lg,
   },
   greeting: {
@@ -224,19 +269,29 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: darkTheme.colors.onSurface,
     marginBottom: spacing.md,
-    paddingHorizontal: spacing.xl,
+    paddingHorizontal: isSmallScreen ? spacing.lg : spacing.xl,
   },
   servicesContainer: {
-    paddingLeft: spacing.xl,
+    paddingLeft: isSmallScreen ? spacing.lg : spacing.xl,
+    paddingRight: isSmallScreen ? spacing.lg : spacing.xl,
     gap: spacing.md,
   },
   serviceCard: {
-    width: width - spacing.xl * 2,
+    width: cardWidth,
     backgroundColor: darkTheme.colors.surface,
     marginRight: spacing.md,
+    borderRadius: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   serviceContent: {
-    padding: spacing.lg,
+    padding: isSmallScreen ? spacing.md : spacing.lg,
   },
   serviceName: {
     color: darkTheme.colors.onSurface,
@@ -251,13 +306,22 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   activeServicesList: {
-    paddingHorizontal: spacing.xl,
+    paddingHorizontal: isSmallScreen ? spacing.lg : spacing.xl,
   },
   activeServiceItem: {
     marginBottom: spacing.sm,
   },
   activeServiceCard: {
     backgroundColor: darkTheme.colors.surface,
+    borderRadius: 12,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   activeServiceContent: {
     padding: spacing.md,
@@ -272,6 +336,7 @@ const styles = StyleSheet.create({
   activeServiceName: {
     color: darkTheme.colors.onSurface,
     flex: 1,
+    marginRight: spacing.sm,
   },
   activeServiceDate: {
     color: darkTheme.colors.onSurfaceVariant,
@@ -283,8 +348,17 @@ const styles = StyleSheet.create({
     marginTop: -8,
   },
   emptyCard: {
-    marginHorizontal: spacing.xl,
+    marginHorizontal: isSmallScreen ? spacing.lg : spacing.xl,
     backgroundColor: darkTheme.colors.surface,
+    borderRadius: 12,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
   },
   emptyContent: {
     padding: spacing.lg,
@@ -299,20 +373,22 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   quickActions: {
-    paddingHorizontal: spacing.xl,
+    paddingHorizontal: isSmallScreen ? spacing.lg : spacing.xl,
     marginBottom: spacing.xxl,
   },
   quickButtonsRow: {
-    flexDirection: 'row',
+    flexDirection: isSmallScreen ? 'column' : 'row',
     gap: spacing.md,
   },
   quickButton: {
     flex: 1,
     borderRadius: 16,
+    minHeight: 56,
   },
   quickButtonContent: {
     height: 56,
     flexDirection: 'column',
+    justifyContent: 'center',
   },
   primaryButton: {
     backgroundColor: darkTheme.colors.primary,
