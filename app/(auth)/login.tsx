@@ -4,9 +4,10 @@ import { Text, TextInput, Button, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
-import { Shield, Eye, EyeOff } from 'lucide-react-native';
+import { Eye, EyeOff } from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { useAuth } from '@/hooks/useAuth';
+import { Image } from 'expo-image';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -29,7 +30,10 @@ export default function LoginScreen() {
     if (success) {
       router.replace('/(tabs)');
     } else {
-      Alert.alert('Error', 'Credenciales inválidas. Intenta con:\nemail: sebastian@example.com\ncontraseña: password');
+      Alert.alert(
+        'Error',
+        'Credenciales inválidas. Intenta con:\nemail: sebastian@example.com\ncontraseña: password'
+      );
     }
   };
 
@@ -46,7 +50,10 @@ export default function LoginScreen() {
           transition={{ type: 'timing', duration: 800 }}
           style={styles.header}
         >
-          <Shield size={60} color={darkTheme.colors.primary} strokeWidth={1.5} />
+          <Image
+            source={require('../../images/logo.png')}
+            style={styles.logo}
+          />
           <Text variant="headlineMedium" style={styles.title}>
             Bienvenido de vuelta
           </Text>
@@ -80,10 +87,12 @@ export default function LoginScreen() {
             secureTextEntry={!isPasswordVisible}
             right={
               <TextInput.Icon
-                icon={({ size, color }) => 
-                  isPasswordVisible ? 
-                    <EyeOff size={size} color={color} /> : 
+                icon={({ size, color }) =>
+                  isPasswordVisible ? (
+                    <EyeOff size={size} color={color} />
+                  ) : (
                     <Eye size={size} color={color} />
+                  )
                 }
                 onPress={() => setIsPasswordVisible(!isPasswordVisible)}
               />
@@ -94,7 +103,9 @@ export default function LoginScreen() {
 
           <Button
             mode="text"
-            onPress={() => Alert.alert('Recuperar Contraseña', 'Funcionalidad mock')}
+            onPress={() =>
+              Alert.alert('Recuperar Contraseña', 'Funcionalidad mock')
+            }
             style={styles.forgotPassword}
           >
             ¿Olvidaste tu contraseña?
@@ -132,9 +143,7 @@ export default function LoginScreen() {
           </View>
 
           <View style={styles.registerSection}>
-            <Text style={styles.registerText}>
-              ¿No tienes cuenta?{' '}
-            </Text>
+            <Text style={styles.registerText}>¿No tienes cuenta? </Text>
             <Button
               mode="text"
               onPress={() => router.push('/(auth)/register')}
@@ -162,6 +171,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.xxl,
     marginTop: spacing.lg,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: spacing.md,
   },
   title: {
     marginTop: spacing.lg,

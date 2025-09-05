@@ -4,23 +4,32 @@ export const darkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: '#4F46E5', // Indigo
-    primaryContainer: '#3730A3',
-    secondary: '#10B981', // Emerald
-    secondaryContainer: '#065F46',
-    tertiary: '#F59E0B', // Amber
-    tertiaryContainer: '#92400E',
-    surface: '#1F2937', // Gray-800
-    surfaceNavigation: '#000000', // dark
-    surfaceVariant: '#374151', // Gray-700
-    background: '#0F0F10', // Gray-900
-    outline: '#6B7280', // Gray-500
-    onSurface: '#F9FAFB', // Gray-50
-    onSurfaceVariant: '#D1D5DB', // Gray-300
-    error: '#EF4444', // Red-500
+    // Acentos (Teal)
+    primary: '#48eadf',
+    primarySelected: '#1e1e1e',
+    primaryContainer: '#2bb8b0',
+    secondary: '#2bb8b0',
+    secondaryContainer: '#0f0f0f',
+    // Mantener tertiary para compatibilidad; usa la variante brillante
+    tertiary: '#48eadf',
+    tertiaryContainer: '#1a1a1a',
+
+    // Superficies y fondos (Negros)
+    background: '#0a0a0a', // Negro Principal
+    surface: '#141414', // Superficie
+    surfaceVariant: '#1e1e1e', // Superficie Elevada
+    surfaceNavigation: '#0f0f0f',
+
+    // Texto
+    onSurface: '#ffffff', // Blanco Principal
+    onSurfaceVariant: '#cccccc', // Gris Claro
+    outline: '#999999', // Gris Medio
+
+    // Estados
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444',
     errorContainer: '#7F1D1D',
-    success: '#10B981', // Green-500
-    warning: '#F59E0B', // Yellow-500
   },
   roundness: 12,
 };
@@ -70,4 +79,25 @@ export const typography = {
     fontWeight: '500' as const,
     lineHeight: 20,
   },
+};
+
+export const radii = {
+  sm: 8, // 0.5rem
+  lg: 12, // 0.75rem
+  xl: 16, // 1rem
+};
+
+export const shadows = {
+  sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+  md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+  lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+  xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+  glow: '0 0 20px rgba(72, 234, 223, 0.15)',
+};
+
+export const fonts = {
+  primary: 'Inter',
+  complementary: 'Inter',
+  alternative: 'Avenir',
+  weights: { w300: '300', w400: '400', w500: '500', w600: '600', w700: '700' },
 };

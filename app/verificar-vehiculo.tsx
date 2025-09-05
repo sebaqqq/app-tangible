@@ -20,7 +20,7 @@ import {
   ArrowLeft,
 } from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
-import { Vehiculo } from '@/types';
+import { Vehiculo } from '../types';
 import { buscarVehiculoPorPatente } from '@/data/mockData';
 import { formatDateDDMMYY } from '@/utils/format';
 

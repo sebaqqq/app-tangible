@@ -1,12 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import {
-  HomeIcon,
-  Shield,
-  MapPin,
-  CreditCard,
-  User,
-} from 'lucide-react-native';
+import { HomeIcon, Search, Map, CreditCard, User } from 'lucide-react-native';
 import { darkTheme } from '@/theme/theme';
 
 export default function TabLayout() {
@@ -44,7 +38,7 @@ export default function TabLayout() {
         options={{
           title: 'Servicios',
           tabBarIcon: ({ color, size }) => (
-            <Shield size={size} color={color} strokeWidth={2} />
+            <Search size={size} color={color} strokeWidth={2} />
           ),
         }}
       />
@@ -53,7 +47,7 @@ export default function TabLayout() {
         options={{
           title: 'Mapa',
           tabBarIcon: ({ color, size }) => (
-            <MapPin size={size} color={color} strokeWidth={2} />
+            <Map size={size} color={color} strokeWidth={2} />
           ),
         }}
       />

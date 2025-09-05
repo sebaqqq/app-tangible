@@ -7,7 +7,7 @@ import { MotiView } from 'moti';
 import {
   Car,
   User,
-  Chrome as Home,
+  HousePlug,
   Users,
   Building,
   ArrowRight,
@@ -28,7 +28,7 @@ const categorias = [
 const iconMap = {
   car: Car,
   'shield-check': User,
-  home: Home,
+  home: HousePlug,
   users: Users,
   building: Building,
 };
@@ -72,7 +72,7 @@ export default function ServiciosScreen() {
                 <View style={styles.iconContainer}>
                   <IconComponent
                     size={24}
-                    color={darkTheme.colors.primary}
+                    color={darkTheme.colors.primarySelected}
                     strokeWidth={2}
                   />
                 </View>
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     color: darkTheme.colors.onSurfaceVariant,
   },
   selectedChipText: {
-    color: darkTheme.colors.primary,
+    color: darkTheme.colors.primarySelected,
   },
   servicesList: {
     padding: spacing.xl,
