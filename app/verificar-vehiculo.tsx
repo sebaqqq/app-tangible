@@ -139,7 +139,9 @@ export default function VerificarVehiculoScreen() {
                   loading={buscando}
                   disabled={buscando || !patente.trim()}
                   style={styles.searchButton}
-                  icon={({ size, color }) => <Search size={size} color={color} />}
+                  icon={({ size, color }) => (
+                    <Search size={size} color={color} />
+                  )}
                 >
                   Buscar
                 </Button>
@@ -293,8 +295,8 @@ export default function VerificarVehiculoScreen() {
                   No se encontró información
                 </Text>
                 <Text style={styles.noResultText}>
-                  No se encontró información para la patente "{patente}". Verifica
-                  que la patente esté correctamente escrita.
+                  No se encontró información para la patente "{patente}".
+                  Verifica que la patente esté correctamente escrita.
                 </Text>
                 <Button
                   mode="contained"
@@ -580,4 +582,3 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
 });
-

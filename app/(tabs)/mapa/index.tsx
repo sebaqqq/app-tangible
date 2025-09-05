@@ -1,29 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Alert, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native';
 import { Text, Card, Button, FAB, Chip } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
 import * as Location from 'expo-location';
-import { MapPin, Plus, Filter, Navigation, TriangleAlert as AlertTriangle } from 'lucide-react-native';
+import {
+  MapPin,
+  Plus,
+  Filter,
+  Navigation,
+  TriangleAlert,
+} from 'lucide-react-native';
 import Modal from 'react-native-modal';
 import { darkTheme, spacing } from '@/theme/theme';
 import { mockIncidentes } from '@/data/mockData';
 import { StatusChip } from '@/components/ui/StatusChip';
 import { formatDateDDMMYY, distanceKm } from '@/utils/format';
+import MapView, { Marker } from 'expo-maps';
 
-const categorias = ['Todos', 'Seguridad', 'Tránsito', 'Servicios', 'Emergencia', 'Otro'];
+const categorias = [
+  'Todos',
+  'Seguridad',
+  'Tránsito',
+  'Servicios',
+  'Emergencia',
+  'Otro',
+];
+
+const DEFAULT_REGION = {
+  latitude: -33.4489,
+  longitude: -70.6693,
+  latitudeDelta: 0.05,
+  longitudeDelta: 0.05,
+};
 
 export default function MapaScreen() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const [isSheetVisible, setIsSheetVisible] = useState(true);
   const [hasLocationPermission, setHasLocationPermission] = useState(false);
   const router = useRouter();
 
+  const mapRef = useRef<MapView | null>(null);
+
   useEffect(() => {
     requestLocationPermission();
   }, []);
+
+  useEffect(() => {
+    if (location && mapRef.current) {
+      recenterMap();
+    }
+  }, [location]);
 
   const requestLocationPermission = async () => {
     try {
@@ -34,7 +72,10 @@ export default function MapaScreen() {
           'La aplicación necesita acceso a tu ubicación para mostrar incidentes cercanos.',
           [
             { text: 'Cancelar', style: 'cancel' },
-            { text: 'Configurar', onPress: () => Location.requestForegroundPermissionsAsync() },
+            {
+              text: 'Configurar',
+              onPress: () => Location.requestForegroundPermissionsAsync(),
+            },
           ]
         );
         return;
@@ -49,9 +90,25 @@ export default function MapaScreen() {
     }
   };
 
+  const recenterMap = () => {
+    const center = location
+      ? {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        }
+      : DEFAULT_REGION;
+
+    if (mapRef.current) {
+      mapRef.current.animateToRegion(center, 500);
+    }
+  };
+
   const filteredIncidents = mockIncidentes
-    .filter(incidente => 
-      selectedCategory === 'Todos' || incidente.categoria === selectedCategory
+    .filter(
+      (incidente) =>
+        selectedCategory === 'Todos' || incidente.categoria === selectedCategory
     )
     .sort((a, b) => {
       if (!location) return 0;
@@ -60,10 +117,16 @@ export default function MapaScreen() {
       return distA - distB;
     });
 
-  const renderIncident = ({ item, index }: { item: typeof mockIncidentes[0], index: number }) => {
-    const distance = location ? 
-      distanceKm(location.coords, { lat: item.lat, lng: item.lng }).toFixed(1) : 
-      null;
+  const renderIncident = ({
+    item,
+    index,
+  }: {
+    item: (typeof mockIncidentes)[0];
+    index: number;
+  }) => {
+    const distance = location
+      ? distanceKm(location.coords, { lat: item.lat, lng: item.lng }).toFixed(1)
+      : null;
 
     return (
       <MotiView
@@ -80,11 +143,11 @@ export default function MapaScreen() {
                 </Text>
                 <StatusChip status={item.estado} />
               </View>
-              
+
               <Text variant="bodyMedium" style={styles.incidentDescription}>
                 {item.descripcion}
               </Text>
-              
+
               <View style={styles.incidentFooter}>
                 <Text variant="bodySmall" style={styles.incidentDate}>
                   {formatDateDDMMYY(item.fecha)}
@@ -109,26 +172,33 @@ export default function MapaScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Mock Map Area */}
-      <MotiView
-        from={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ type: 'timing', duration: 1000 }}
-        style={styles.mapContainer}
-      >
-        <View style={styles.mockMap}>
-          <MapPin size={32} color={darkTheme.colors.primary} strokeWidth={2} />
-          <Text variant="bodyLarge" style={styles.mapText}>
-            Mapa Interactivo
-          </Text>
-          <Text variant="bodySmall" style={styles.mapSubtext}>
-            {hasLocationPermission ? 
-              'Ubicación: Santiago, Chile' : 
-              'Permisos de ubicación requeridos'
-            }
-          </Text>
-        </View>
-        
+      <View style={styles.mapContainer}>
+        <MapView
+          ref={(ref) => (mapRef.current = ref)}
+          style={styles.map}
+          showsUserLocation
+          showsMyLocationButton={Platform.OS === 'android'}
+          initialRegion={
+            location
+              ? {
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                  latitudeDelta: 0.02,
+                  longitudeDelta: 0.02,
+                }
+              : DEFAULT_REGION
+          }
+        >
+          {filteredIncidents.map((item) => (
+            <Marker
+              key={item.id}
+              coordinate={{ latitude: item.lat, longitude: item.lng }}
+              title={`${item.categoria} • ${item.estado}`}
+              description={item.descripcion}
+            />
+          ))}
+        </MapView>
+
         <Button
           mode="contained"
           onPress={() => setIsSheetVisible(true)}
@@ -137,7 +207,7 @@ export default function MapaScreen() {
         >
           Ver incidentes
         </Button>
-      </MotiView>
+      </View>
 
       {/* Bottom Sheet Modal */}
       <Modal
@@ -149,7 +219,7 @@ export default function MapaScreen() {
       >
         <View style={styles.sheetContainer}>
           <View style={styles.sheetHandle} />
-          
+
           <Text variant="titleLarge" style={styles.sheetTitle}>
             Incidentes Cercanos
           </Text>
@@ -195,6 +265,13 @@ export default function MapaScreen() {
         onPress={() => router.push('/(tabs)/mapa/reportar')}
         label="Reportar"
       />
+      <FAB
+        icon={({ size, color }) => <Navigation size={size} color={color} />}
+        style={styles.gpsFab}
+        onPress={recenterMap}
+        label="Mi ubicación"
+        small
+      />
     </SafeAreaView>
   );
 }
@@ -210,24 +287,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
-  mockMap: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: darkTheme.colors.surface,
-    margin: spacing.md,
-    borderRadius: 16,
-    padding: spacing.xl,
-  },
-  mapText: {
-    color: darkTheme.colors.onSurface,
-    marginTop: spacing.md,
-    textAlign: 'center',
-  },
-  mapSubtext: {
-    color: darkTheme.colors.onSurfaceVariant,
-    marginTop: spacing.sm,
-    textAlign: 'center',
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
   sheetToggle: {
     position: 'absolute',
@@ -329,5 +390,12 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 80,
     backgroundColor: darkTheme.colors.secondary,
+  },
+  gpsFab: {
+    position: 'absolute',
+    right: 0,
+    bottom: 150,
+    margin: 16,
+    backgroundColor: darkTheme.colors.primary,
   },
 });

@@ -1,9 +1,28 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { Text, Card, Button, Avatar, Divider, List, Switch } from 'react-native-paper';
+import {
+  Text,
+  Card,
+  Button,
+  Avatar,
+  Divider,
+  List,
+  Switch,
+} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MotiView } from 'moti';
-import { User, CreditCard as Edit3, Lock, History, Bell, MapPin, Wifi, LogOut, ChevronRight, Shield, CreditCard, FileText } from 'lucide-react-native';
+import {
+  CreditCard as Edit3,
+  Lock,
+  Bell,
+  MapPin,
+  Wifi,
+  LogOut,
+  ChevronRight,
+  Shield,
+  CreditCard,
+  FileText,
+} from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { useAuth } from '@/hooks/useAuth';
 import { mockSolicitudes, mockPagos, mockIncidentes } from '@/data/mockData';
@@ -25,31 +44,33 @@ export default function PerfilScreen() {
   }
 
   const handleLogout = () => {
-    Alert.alert(
-      'Cerrar Sesión',
-      '¿Estás seguro que deseas cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Cerrar Sesión', style: 'destructive', onPress: logout },
-      ]
-    );
+    Alert.alert('Cerrar Sesión', '¿Estás seguro que deseas cerrar sesión?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Cerrar Sesión', style: 'destructive', onPress: logout },
+    ]);
   };
 
   const handleEditProfile = () => {
-    Alert.alert('Editar Perfil', 'Funcionalidad mock - Editar información personal');
+    Alert.alert(
+      'Editar Perfil',
+      'Funcionalidad mock - Editar información personal'
+    );
   };
 
   const handleChangePassword = () => {
-    Alert.alert('Cambiar Contraseña', 'Funcionalidad mock - Cambio de contraseña');
+    Alert.alert(
+      'Cambiar Contraseña',
+      'Funcionalidad mock - Cambio de contraseña'
+    );
   };
 
   const updatePreference = (key: string, value: boolean) => {
-    setPreferences(prev => ({ ...prev, [key]: value }));
+    setPreferences((prev) => ({ ...prev, [key]: value }));
   };
 
   const getStatsData = () => ({
     servicios: mockSolicitudes.length,
-    incidentes: mockIncidentes.filter(i => i.usuarioId === user.id).length,
+    incidentes: mockIncidentes.filter((i) => i.usuarioId === user.id).length,
     pagos: mockPagos.length,
   });
 
@@ -57,7 +78,10 @@ export default function PerfilScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header con información del usuario */}
         <MotiView
           from={{ opacity: 0, translateY: -30 }}
@@ -79,9 +103,13 @@ export default function PerfilScreen() {
           <Card style={styles.profileCard}>
             <Card.Content style={styles.profileContent}>
               <View style={styles.profileHeader}>
-                <Avatar.Image 
-                  size={80} 
-                  source={{ uri: user.avatarUrl || 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg' }}
+                <Avatar.Image
+                  size={80}
+                  source={{
+                    uri:
+                      user.avatarUrl ||
+                      'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+                  }}
                 />
                 <View style={styles.profileInfo}>
                   <Text variant="headlineSmall" style={styles.userName}>
@@ -95,7 +123,7 @@ export default function PerfilScreen() {
                   </Text>
                 </View>
               </View>
-              
+
               <Button
                 mode="outlined"
                 onPress={handleEditProfile}
@@ -160,7 +188,7 @@ export default function PerfilScreen() {
               <Text variant="titleMedium" style={styles.menuTitle}>
                 Cuenta
               </Text>
-              
+
               <List.Item
                 title="Cambiar contraseña"
                 left={({ color }) => <Lock size={24} color={color} />}
@@ -168,30 +196,39 @@ export default function PerfilScreen() {
                 onPress={handleChangePassword}
                 titleStyle={styles.menuItemTitle}
               />
-              
+
               <Divider style={styles.menuDivider} />
-              
+
               <List.Item
                 title="Historial de servicios"
                 left={({ color }) => <Shield size={24} color={color} />}
                 right={({ color }) => <ChevronRight size={20} color={color} />}
-                onPress={() => Alert.alert('Historial', 'Ver historial de servicios (Mock)')}
+                onPress={() =>
+                  Alert.alert('Historial', 'Ver historial de servicios (Mock)')
+                }
                 titleStyle={styles.menuItemTitle}
               />
-              
+
               <List.Item
                 title="Mis incidentes"
                 left={({ color }) => <FileText size={24} color={color} />}
                 right={({ color }) => <ChevronRight size={20} color={color} />}
-                onPress={() => Alert.alert('Incidentes', 'Ver mis incidentes reportados (Mock)')}
+                onPress={() =>
+                  Alert.alert(
+                    'Incidentes',
+                    'Ver mis incidentes reportados (Mock)'
+                  )
+                }
                 titleStyle={styles.menuItemTitle}
               />
-              
+
               <List.Item
                 title="Historial de pagos"
                 left={({ color }) => <CreditCard size={24} color={color} />}
                 right={({ color }) => <ChevronRight size={20} color={color} />}
-                onPress={() => Alert.alert('Pagos', 'Ver historial completo de pagos (Mock)')}
+                onPress={() =>
+                  Alert.alert('Pagos', 'Ver historial completo de pagos (Mock)')
+                }
                 titleStyle={styles.menuItemTitle}
               />
             </Card.Content>
@@ -209,7 +246,7 @@ export default function PerfilScreen() {
               <Text variant="titleMedium" style={styles.menuTitle}>
                 Preferencias
               </Text>
-              
+
               <View style={styles.preferenceItem}>
                 <View style={styles.preferenceContent}>
                   <Bell size={24} color={darkTheme.colors.onSurface} />
@@ -222,18 +259,22 @@ export default function PerfilScreen() {
                 </View>
                 <Switch
                   value={preferences.notifications}
-                  onValueChange={(value) => updatePreference('notifications', value)}
+                  onValueChange={(value) =>
+                    updatePreference('notifications', value)
+                  }
                   color={darkTheme.colors.primary}
                 />
               </View>
-              
+
               <Divider style={styles.menuDivider} />
-              
+
               <View style={styles.preferenceItem}>
                 <View style={styles.preferenceContent}>
                   <MapPin size={24} color={darkTheme.colors.onSurface} />
                   <View style={styles.preferenceText}>
-                    <Text style={styles.preferenceTitle}>Compartir ubicación</Text>
+                    <Text style={styles.preferenceTitle}>
+                      Compartir ubicación
+                    </Text>
                     <Text style={styles.preferenceDescription}>
                       Permitir servicios basados en ubicación
                     </Text>
@@ -245,9 +286,9 @@ export default function PerfilScreen() {
                   color={darkTheme.colors.primary}
                 />
               </View>
-              
+
               <Divider style={styles.menuDivider} />
-              
+
               <View style={styles.preferenceItem}>
                 <View style={styles.preferenceContent}>
                   <Wifi size={24} color={darkTheme.colors.onSurface} />
@@ -260,7 +301,9 @@ export default function PerfilScreen() {
                 </View>
                 <Switch
                   value={preferences.dataOptimization}
-                  onValueChange={(value) => updatePreference('dataOptimization', value)}
+                  onValueChange={(value) =>
+                    updatePreference('dataOptimization', value)
+                  }
                   color={darkTheme.colors.primary}
                 />
               </View>
@@ -281,7 +324,9 @@ export default function PerfilScreen() {
             style={styles.logoutButton}
             contentStyle={styles.logoutButtonContent}
             textColor={darkTheme.colors.error}
-            icon={({ size }) => <LogOut size={size} color={darkTheme.colors.error} />}
+            icon={({ size }) => (
+              <LogOut size={size} color={darkTheme.colors.error} />
+            )}
           >
             Cerrar Sesión
           </Button>

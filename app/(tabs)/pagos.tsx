@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Text, Card, Searchbar, Chip, Button, FAB } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MotiView } from 'moti';
@@ -15,50 +15,60 @@ export default function PagosScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('Todos');
 
-  const filteredPayments = mockPagos.filter(pago => {
-    const servicio = mockServicios.find(s => s.id === pago.servicioId);
+  const filteredPayments = mockPagos.filter((pago) => {
+    const servicio = mockServicios.find((s) => s.id === pago.servicioId);
     const serviceName = servicio?.nombre || 'Servicio';
-    
-    const matchesSearch = serviceName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = selectedFilter === 'Todos' || 
-                         (selectedFilter === 'Pendientes' && pago.estado === 'Pendiente') ||
-                         (selectedFilter === 'Pagados' && pago.estado === 'Pagado') ||
-                         (selectedFilter === 'Rechazados' && pago.estado === 'Rechazado');
-    
+
+    const matchesSearch = serviceName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesFilter =
+      selectedFilter === 'Todos' ||
+      (selectedFilter === 'Pendientes' && pago.estado === 'Pendiente') ||
+      (selectedFilter === 'Pagados' && pago.estado === 'Pagado') ||
+      (selectedFilter === 'Rechazados' && pago.estado === 'Rechazado');
+
     return matchesSearch && matchesFilter;
   });
 
   const handleDownloadReceipt = (pagoId: string) => {
-    Alert.alert('Comprobante', `Descargando comprobante del pago ${pagoId}... (Mock)`, [
-      { text: 'OK' }
-    ]);
-  };
-
-  const handlePayNow = (pagoId: string) => {
     Alert.alert(
-      'Procesar Pago',
-      '¿Cómo deseas pagar?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Tarjeta de Crédito', onPress: () => mockPayment('tarjeta') },
-        { text: 'Transferencia', onPress: () => mockPayment('transferencia') },
-      ]
+      'Comprobante',
+      `Descargando comprobante del pago ${pagoId}... (Mock)`,
+      [{ text: 'OK' }]
     );
   };
 
+  const handlePayNow = (pagoId: string) => {
+    Alert.alert('Procesar Pago', '¿Cómo deseas pagar?', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Tarjeta de Crédito', onPress: () => mockPayment('tarjeta') },
+      { text: 'Transferencia', onPress: () => mockPayment('transferencia') },
+    ]);
+  };
+
   const mockPayment = (method: string) => {
-    Alert.alert('Pago Procesado', `Pago con ${method} procesado exitosamente (Mock)`);
+    Alert.alert(
+      'Pago Procesado',
+      `Pago con ${method} procesado exitosamente (Mock)`
+    );
   };
 
   const getTotalPendiente = () => {
     return mockPagos
-      .filter(pago => pago.estado === 'Pendiente')
+      .filter((pago) => pago.estado === 'Pendiente')
       .reduce((total, pago) => total + pago.monto, 0);
   };
 
-  const renderPayment = ({ item, index }: { item: typeof mockPagos[0], index: number }) => {
-    const servicio = mockServicios.find(s => s.id === item.servicioId);
-    
+  const renderPayment = ({
+    item,
+    index,
+  }: {
+    item: (typeof mockPagos)[0];
+    index: number;
+  }) => {
+    const servicio = mockServicios.find((s) => s.id === item.servicioId);
+
     return (
       <MotiView
         from={{ opacity: 0, translateX: 30 }}
@@ -92,19 +102,23 @@ export default function PagosScreen() {
                   onPress={() => handlePayNow(item.id)}
                   style={styles.payButton}
                   contentStyle={styles.actionButtonContent}
-                  icon={({ size, color }) => <CreditCard size={size} color={color} />}
+                  icon={({ size, color }) => (
+                    <CreditCard size={size} color={color} />
+                  )}
                 >
                   Pagar Ahora
                 </Button>
               )}
-              
+
               {item.estado === 'Pagado' && item.comprobante && (
                 <Button
                   mode="outlined"
                   onPress={() => handleDownloadReceipt(item.id)}
                   style={styles.downloadButton}
                   contentStyle={styles.actionButtonContent}
-                  icon={({ size, color }) => <Download size={size} color={color} />}
+                  icon={({ size, color }) => (
+                    <Download size={size} color={color} />
+                  )}
                 >
                   Descargar Comprobante
                 </Button>
@@ -122,7 +136,7 @@ export default function PagosScreen() {
         <Text variant="headlineMedium" style={styles.title}>
           Mis Pagos
         </Text>
-        
+
         {getTotalPendiente() > 0 && (
           <MotiView
             from={{ opacity: 0, scale: 0.9 }}
@@ -141,7 +155,7 @@ export default function PagosScreen() {
             </Card>
           </MotiView>
         )}
-        
+
         <Searchbar
           placeholder="Buscar pagos..."
           onChangeText={setSearchQuery}
@@ -149,7 +163,7 @@ export default function PagosScreen() {
           style={styles.searchbar}
           theme={{ colors: darkTheme.colors }}
         />
-        
+
         <FlatList
           data={filtros}
           horizontal
@@ -186,7 +200,9 @@ export default function PagosScreen() {
       <FAB
         icon={({ size, color }) => <Plus size={size} color={color} />}
         style={styles.fab}
-        onPress={() => Alert.alert('Nuevo Pago', 'Funcionalidad mock - Crear nuevo pago')}
+        onPress={() =>
+          Alert.alert('Nuevo Pago', 'Funcionalidad mock - Crear nuevo pago')
+        }
         label="Nuevo pago"
       />
     </SafeAreaView>

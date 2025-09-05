@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import { Text, Card, Button, FAB } from 'react-native-paper';
+import { Text, Card, Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { MotiView } from 'moti';
@@ -15,7 +15,6 @@ import {
   Plus,
   TriangleAlert as AlertTriangle,
   ArrowRight,
-  Car,
 } from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { useAuth } from '@/hooks/useAuth';
@@ -26,6 +25,7 @@ import {
   mockSolicitudes,
 } from '@/data/mockData';
 import { formatDateDDMMYY } from '@/utils/format';
+import VerificacionPatente from '@/components/VerificacionPatente';
 
 const { width, height } = Dimensions.get('window');
 const isSmallScreen = width < 375;
@@ -35,9 +35,6 @@ export default function HomeScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [vehiculoVerificado, setVehiculoVerificado] = useState<Vehiculo | null>(
-    null
-  );
 
   const greeting = user
     ? getGreetingMessage(user.nombre.split(' ')[0])
@@ -137,9 +134,6 @@ export default function HomeScreen() {
           </Text>
         </MotiView>
 
-        {/* Verificación de patente */}
-        <VerificacionPatente onVerificar={setVehiculoVerificado} />
-
         {/* Servicios destacados */}
         <MotiView
           from={{ opacity: 0, translateY: 30 }}
@@ -215,36 +209,23 @@ export default function HomeScreen() {
           <View style={styles.quickButtonsRow}>
             <Button
               mode="contained"
-              onPress={() => router.push('/(tabs)/servicios')}
+              onPress={() => router.push('/verificar-vehiculo')}
               style={[styles.quickButton, styles.primaryButton]}
               contentStyle={styles.quickButtonContent}
-              icon={({ size, color }) => <Plus size={size} color={color} />}
             >
-              Solicitar Servicio
+              Verificar Patente
             </Button>
             <Button
               mode="contained-tonal"
               onPress={() => router.push('/(tabs)/mapa')}
               style={[styles.quickButton, styles.secondaryButton]}
               contentStyle={styles.quickButtonContent}
-              icon={({ size, color }) => (
-                <AlertTriangle size={size} color={color} />
-              )}
             >
               Reportar Incidente
             </Button>
           </View>
         </MotiView>
       </ScrollView>
-
-      {/*  
-      <FAB
-        icon={({ size, color }) => <Plus size={size} color={color} />}
-        style={styles.fab}
-        onPress={() => router.push('/(tabs)/servicios')}
-        label="Nuevo servicio"
-      />
-      */}
     </SafeAreaView>
   );
 }
