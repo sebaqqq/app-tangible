@@ -15,6 +15,7 @@ import {
   Plus,
   TriangleAlert as AlertTriangle,
   ArrowRight,
+  Car,
 } from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { useAuth } from '@/hooks/useAuth';
@@ -34,6 +35,9 @@ export default function HomeScreen() {
   const { user } = useAuth();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [vehiculoVerificado, setVehiculoVerificado] = useState<Vehiculo | null>(
+    null
+  );
 
   const greeting = user
     ? getGreetingMessage(user.nombre.split(' ')[0])
@@ -132,6 +136,9 @@ export default function HomeScreen() {
             Tu seguridad es nuestra prioridad
           </Text>
         </MotiView>
+
+        {/* Verificación de patente */}
+        <VerificacionPatente onVerificar={setVehiculoVerificado} />
 
         {/* Servicios destacados */}
         <MotiView

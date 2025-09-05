@@ -1,4 +1,11 @@
-import { Usuario, Servicio, SolicitudServicio, Pago, Incidente } from '@/types';
+import {
+  Usuario,
+  Servicio,
+  SolicitudServicio,
+  Pago,
+  Incidente,
+  Vehiculo,
+} from '@/types';
 
 export const mockUser: Usuario = {
   id: '1',
@@ -17,7 +24,12 @@ export const mockServicios: Servicio[] = [
     descripcion: 'Protección completa para tu vehículo 24/7',
     icono: 'car',
     precio: 29990,
-    beneficios: ['Monitoreo GPS', 'Alarma antirrobo', 'Asistencia 24/7', 'Seguro incluido'],
+    beneficios: [
+      'Monitoreo GPS',
+      'Alarma antirrobo',
+      'Asistencia 24/7',
+      'Seguro incluido',
+    ],
   },
   {
     id: '2',
@@ -26,7 +38,12 @@ export const mockServicios: Servicio[] = [
     descripcion: 'Protección personal profesional',
     icono: 'shield-check',
     precio: 89990,
-    beneficios: ['Personal capacitado', 'Disponibilidad 24/7', 'Discreción total', 'Reportes semanales'],
+    beneficios: [
+      'Personal capacitado',
+      'Disponibilidad 24/7',
+      'Discreción total',
+      'Reportes semanales',
+    ],
   },
   {
     id: '3',
@@ -35,7 +52,12 @@ export const mockServicios: Servicio[] = [
     descripcion: 'Seguridad para tu hogar',
     icono: 'home',
     precio: 45990,
-    beneficios: ['Cámaras HD', 'Monitoreo remoto', 'Alertas inmediatas', 'App móvil'],
+    beneficios: [
+      'Cámaras HD',
+      'Monitoreo remoto',
+      'Alertas inmediatas',
+      'App móvil',
+    ],
   },
   {
     id: '4',
@@ -44,7 +66,12 @@ export const mockServicios: Servicio[] = [
     descripcion: 'Acompañamiento en espacios públicos',
     icono: 'users',
     precio: 19990,
-    beneficios: ['Personal uniformado', 'Rutas seguras', 'Comunicación constante', 'Tarifas por hora'],
+    beneficios: [
+      'Personal uniformado',
+      'Rutas seguras',
+      'Comunicación constante',
+      'Tarifas por hora',
+    ],
   },
   {
     id: '5',
@@ -53,7 +80,12 @@ export const mockServicios: Servicio[] = [
     descripcion: 'Soluciones integrales para empresas',
     icono: 'building',
     precio: 199990,
-    beneficios: ['Control de accesos', 'Vigilancia perimetral', 'Personal especializado', 'Reportes ejecutivos'],
+    beneficios: [
+      'Control de accesos',
+      'Vigilancia perimetral',
+      'Personal especializado',
+      'Reportes ejecutivos',
+    ],
   },
 ];
 
@@ -156,14 +188,131 @@ export const mockIncidentes: Incidente[] = [
   },
 ];
 
+export const mockVehiculos: Vehiculo[] = [
+  {
+    patente: 'ABCD12',
+    marca: 'Toyota',
+    modelo: 'Corolla',
+    año: 2020,
+    color: 'Blanco',
+    tipo: 'Automóvil',
+    propietario: {
+      nombre: 'Sebastián González',
+      rut: '12.345.678-9',
+    },
+    estado: 'Vigente',
+    ultimaVerificacion: new Date('2024-01-15'),
+    serviciosActivos: ['Seguridad Vehicular'],
+    historial: [
+      {
+        fecha: new Date('2024-01-15'),
+        evento: 'Servicio activado',
+        descripcion: 'Se activó el servicio de Seguridad Vehicular',
+      },
+      {
+        fecha: new Date('2024-01-10'),
+        evento: 'Verificación técnica',
+        descripcion: 'Revisión técnica aprobada',
+      },
+    ],
+  },
+  {
+    patente: 'EFGH34',
+    marca: 'Honda',
+    modelo: 'Civic',
+    año: 2019,
+    color: 'Gris',
+    tipo: 'Automóvil',
+    propietario: {
+      nombre: 'María Rodríguez',
+      rut: '98.765.432-1',
+    },
+    estado: 'Robado',
+    ultimaVerificacion: new Date('2024-01-20'),
+    serviciosActivos: [],
+    historial: [
+      {
+        fecha: new Date('2024-01-20'),
+        evento: 'Reporte de robo',
+        descripcion: 'Vehículo reportado como robado',
+      },
+      {
+        fecha: new Date('2024-01-18'),
+        evento: 'Servicio cancelado',
+        descripcion: 'Servicio de seguridad cancelado',
+      },
+    ],
+  },
+  {
+    patente: 'IJKL56',
+    marca: 'Ford',
+    modelo: 'Ranger',
+    año: 2021,
+    color: 'Azul',
+    tipo: 'Camioneta',
+    propietario: {
+      nombre: 'Carlos Pérez',
+      rut: '11.222.333-4',
+    },
+    estado: 'Vigente',
+    ultimaVerificacion: new Date('2024-01-22'),
+    serviciosActivos: ['Seguridad Vehicular', 'Rastreo GPS'],
+    historial: [
+      {
+        fecha: new Date('2024-01-22'),
+        evento: 'Servicio renovado',
+        descripcion: 'Servicio de seguridad renovado por 6 meses',
+      },
+      {
+        fecha: new Date('2024-01-15'),
+        evento: 'Mantenimiento',
+        descripcion: 'Mantenimiento preventivo realizado',
+      },
+    ],
+  },
+  {
+    patente: 'MNOP78',
+    marca: 'Yamaha',
+    modelo: 'FZ-16',
+    año: 2022,
+    color: 'Rojo',
+    tipo: 'Moto',
+    propietario: {
+      nombre: 'Ana Silva',
+      rut: '55.666.777-8',
+    },
+    estado: 'En proceso',
+    ultimaVerificacion: new Date('2024-01-21'),
+    serviciosActivos: [],
+    historial: [
+      {
+        fecha: new Date('2024-01-21'),
+        evento: 'Verificación en proceso',
+        descripcion: 'Verificación de documentos en proceso',
+      },
+      {
+        fecha: new Date('2024-01-20'),
+        evento: 'Solicitud recibida',
+        descripcion: 'Solicitud de servicio recibida',
+      },
+    ],
+  },
+];
+
+// Función para buscar vehículo por patente
+export const buscarVehiculoPorPatente = (patente: string): Vehiculo | null => {
+  const patenteNormalizada = patente.toUpperCase().replace(/\s/g, '');
+  return mockVehiculos.find((v) => v.patente === patenteNormalizada) || null;
+};
+
 // Función para obtener saludo dinámico
 export const getGreetingMessage = (nombre: string): string => {
   const hour = new Date().getHours();
   let greeting = 'Hola';
-  
+
   if (hour < 12) greeting = 'Buenos días';
   else if (hour < 18) greeting = 'Buenas tardes';
   else greeting = 'Buenas noches';
-  
+
   return `${greeting}, ${nombre} 👋`;
 };

@@ -10,7 +10,12 @@ export interface Usuario {
 export interface Servicio {
   id: string;
   nombre: string;
-  categoria: 'Automotriz' | 'Personal' | 'Inmobiliaria' | 'Ciudadana' | 'Empresarial';
+  categoria:
+    | 'Automotriz'
+    | 'Personal'
+    | 'Inmobiliaria'
+    | 'Ciudadana'
+    | 'Empresarial';
   descripcion: string;
   icono: string;
   precio?: number;
@@ -51,6 +56,27 @@ export interface Incidente {
   videoUrl?: string;
   estado: 'Reportado' | 'En revisión' | 'Resuelto' | 'Cerrado';
   fecha: Date;
+}
+
+export interface Vehiculo {
+  patente: string;
+  marca: string;
+  modelo: string;
+  año: number;
+  color: string;
+  tipo: 'Automóvil' | 'Camioneta' | 'Moto' | 'Bus' | 'Camión';
+  propietario: {
+    nombre: string;
+    rut: string;
+  };
+  estado: 'Vigente' | 'Robado' | 'Secuestrado' | 'En proceso';
+  ultimaVerificacion: Date;
+  serviciosActivos: string[];
+  historial: {
+    fecha: Date;
+    evento: string;
+    descripcion: string;
+  }[];
 }
 
 export type RootStackParamList = {
