@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Text, Card, Searchbar, Chip, Button, FAB } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MotiView } from 'moti';
-import { CreditCard, Download, Plus, Filter } from 'lucide-react-native';
+import { CreditCard, Download, Plus } from 'lucide-react-native';
 import { darkTheme, spacing } from '@/theme/theme';
 import { mockPagos, mockServicios } from '@/data/mockData';
 import { StatusChip } from '@/components/ui/StatusChip';
@@ -231,11 +231,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   summaryLabel: {
-    color: darkTheme.colors.onSurface,
+    color: darkTheme.colors.primarySelected,
     marginBottom: spacing.xs,
   },
   summaryAmount: {
-    color: darkTheme.colors.primary,
+    color: darkTheme.colors.primarySelected,
     fontWeight: '700',
   },
   searchbar: {
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     color: darkTheme.colors.onSurfaceVariant,
   },
   selectedChipText: {
-    color: darkTheme.colors.primary,
+    color: darkTheme.colors.primarySelected,
   },
   paymentsList: {
     padding: spacing.xl,
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     margin: 16,
     right: 0,
-    bottom: 80,
-    backgroundColor: darkTheme.colors.tertiary,
+    bottom: 10,
+    backgroundColor: darkTheme.colors.primaryContainer,
   },
 });

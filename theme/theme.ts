@@ -6,7 +6,7 @@ export const darkTheme = {
     ...MD3DarkTheme.colors,
     // Acentos (Teal)
     primary: '#48eadf',
-    primarySelected: '#1e1e1e',
+    primarySelected: '#000000',
     primaryContainer: '#2bb8b0',
     secondary: '#2bb8b0',
     secondaryContainer: '#0f0f0f',
